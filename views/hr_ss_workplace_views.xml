@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="hr_ss_workplace_action" model="ir.actions.act_window">
+            <field name="name">Insurance Workspace</field>
+            <field name="res_model">hr.ss.workplace</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+
+        <menuitem
+                id="menu_hr_ss_workplace_menu"
+                action="hr_ss_workplace_action"
+                parent="hr.menu_human_resources_configuration"
+                sequence="10"/>
+
+    </data>
+</odoo>
+
+
+
+
+

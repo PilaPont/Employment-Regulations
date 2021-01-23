@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_ss_workplace_public,access_hr_ss_workplace_manager,model_hr_ss_workplace,base.group_user,1,0,0,0
+access_hr_ss_workplace_manager,access_hr_ss_workplace_manager,model_hr_ss_workplace,hr.group_hr_manager,1,1,1,1
+access_hr_employee_dependants_public,access_hr_employee_dependants_public,model_hr_employee_dependants,base.group_user,1,0,0,0
+access_hr_employee_dependants_manager,access_hr_employee_dependants_manager,model_hr_employee_dependants,hr.group_hr_manager,1,1,1,1

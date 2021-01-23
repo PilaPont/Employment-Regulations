@@ -1,4 +1,5 @@
 from odoo import api, fields, models, _
+from odoo.exceptions import AccessDenied
 
 class HrSSWorkplace(models.Model):
     _name = 'hr.ss.workplace'
@@ -12,10 +13,18 @@ class HrSSWorkplace(models.Model):
         for workplace in self:
             workplace.display_name = '{} ({})'.format(workplace.partner_id.name, workplace.name)
 
+    def unlink(self):
+        for workplace in self:
+            employees = self.env['hr.employee'].search([('insurance_workplace_id','=',workplace.id)])
+            if employees:
+                raise AccessDenied(_('You cannot remove this workplace because some employees are members of it.'))
+            else:
+                return super(HrSSWorkplace, self).unlink()
+
 class HrEmployeeDependants(models.Model):
     _name = 'hr.employee.dependants'
 
-    name = fields.Char()
+    first_name = fields.Char()
     last_name = fields.Char()
     national_number = fields.Char()
     relation = fields.Selection(
@@ -28,7 +37,7 @@ class HrEmployeeDependants(models.Model):
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
-    name = fields.Char()
+    first_name = fields.Char()
     last_name = fields.Char()
     nick_name = fields.Char()
     father_name = fields.Char()
@@ -37,10 +46,17 @@ class HrEmployee(models.Model):
     insurance_code = fields.Char()
     insurance_workplace_id = fields.Many2one('hr.ss.workplace')
     dependant_person_ids = fields.One2many('hr.employee.dependants', 'employee')
-    child_count = fields.Integer(compute="_compute_child_count")
+    children = fields.Integer(compute="_compute_child_count")
+    departure_reason = fields.Selection([
+        ('fired', 'Fired'),
+        ('resigned', 'Resigned'),
+        ('retired', 'Retired'),
+        ('end_of_contract', 'End of contract'),
+    ], string="Departure Reason", groups="hr.group_hr_user", copy=False, tracking=True)
+    start_work_date = fields.Datetime()
 
     @api.depends('dependant_person_ids')
     def _compute_child_count(self):
         for employee in self:
-            employee.child_count = len(employee.dependant_person_ids)
+            employee.children = len(employee.dependant_person_ids.filtered(lambda x: x.relation == 'child'))
 

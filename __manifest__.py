@@ -9,7 +9,12 @@
     'website': "www.kenevist.ir",  # add /url/to/module_info if exist
     'license': 'OPL-1',  # for free addons use 'LGPL-3'
     'category': 'Human Resources',
-    'depends': ['hr', ],
+    'depends': ['hr',
+                'l10n_ir_partner',
+                ],
+    'data': ['views/hr_employee_views.xml',
+             'views/hr_ss_workplace_views.xml',
+             'security/ir.model.access.csv',],
     'auto_install': True,
     'application': False,
     'installable': True,
