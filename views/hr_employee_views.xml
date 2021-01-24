@@ -6,12 +6,7 @@
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='work_location']" position="after">
-                <field name="insurance_workplace_id"/>
-            </xpath>
-            <xpath expr="//page[@name='public']/div/div" position="after">
-                <group string="Insurance">
-                    <field name="insurance_code"/>
-                </group>
+                <field name="workplace_id"/>
             </xpath>
             <xpath expr="//field[@name='address_home_id']" position="before">
                 <field name="first_name"/>
@@ -22,21 +17,23 @@
             <xpath expr="//field[@name='country_of_birth']" position="after">
                 <field name="birth_certificate_number"/>
                 <field name="place_of_issue_birth_certificate_id"/>
+                <field name="insurance_code"/>
             </xpath>
-            <xpath expr="//field[@name='children']" position="after">
-                <field name="dependant_person_ids">
-                        <tree editable="buttom" >
-                            <field name="first_name"/>
-                            <field name="last_name"/>
-                            <field name="national_number"/>
-                            <field name="relation"/>
-                            <field name="student"/>
-                            <field name="employee" invisible="1"/>
-                        </tree>
+            <xpath expr="//field[@name='children']" position="before">
+                <field name="dependant_person_ids" nolabel="1" colspan="2">
+                    <tree editable="bottom">
+                        <field name="first_name"/>
+                        <field name="last_name"/>
+                        <field name="national_number"/>
+                        <field name="relation"/>
+                        <field name="student" attrs="{'invisible':[('relation','!=', 'child')]}" />
+                    </tree>
                 </field>
             </xpath>
             <xpath expr="//group[@name='departure']" position="before">
-                <field name="start_work_date"/>
+                <group>
+                    <field name="start_work_date"/>
+                </group>
             </xpath>
         </field>
     </record>
