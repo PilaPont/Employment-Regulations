@@ -1,7 +1,6 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import AccessDenied
 
-
 class HrDepartureWizard(models.TransientModel):
     _inherit = 'hr.departure.wizard'
 
@@ -46,6 +45,20 @@ class HrSSWorkplace(models.Model):
             "search_view_id" : self.env.ref("hr.view_employee_filter").id
         }
 
+    def name_get(self):
+        res = []
+        for workplace in self:
+            res.append((workplace.id, '{} ({})'.format(workplace.partner_id.name, workplace.name)))
+        return res
+
+    @api.model
+    def name_search(self, name='', args=None, operator='ilike', limit=100):
+        args = args or []
+        domain_name = ['|', ('name', 'ilike', name), ('partner_id.name', 'ilike', name)]
+        recs = self.search(domain_name + args, limit=limit)
+        return recs.name_get()
+
+
 class HrEmployeeDependants(models.Model):
     _name = 'hr.employee.dependants'
 
@@ -82,3 +95,18 @@ class HrEmployee(models.Model):
     def _compute_child_count(self):
         for employee in self:
             employee.children = len(employee.dependant_person_ids.filtered(lambda x: x.relation == 'child'))
+
+    @api.model
+    def create(self, vals):
+        res = super(HrEmployee, self).create(vals)
+        for employee in res:
+            for person in employee.dependant_person_ids:
+                self.env['res.partner'].check_personal_nid(person.national_number)
+        return res
+
+    def write(self, vals):
+        res = super(HrEmployee, self).write(vals)
+        for employee in self:
+            for person in employee.dependant_person_ids:
+                self.env['res.partner'].check_personal_nid(person.national_number)
+        return res

@@ -16,7 +16,7 @@
                         </div>
                         <group>
                             <group>
-                                <field name="name" widget="text"/>
+                                <field name="name"/>
                             </group>
                             <group>
                                 <field name="partner_id"/>
@@ -33,7 +33,7 @@
             <field name="arch" type="xml">
                 <tree string="Workplace">
                     <field name="display_name"/>
-                    <field name="name" widget="text"/>
+                    <field name="name"/>
                     <field name="partner_id"/>
                     <field name="employees_count"/>
                 </tree>
