@@ -169,7 +169,7 @@ msgstr "تعداد فرزند"
 #. module: hr_employee_iran_rules
 #: model:ir.model.fields.selection,name:hr_employee_iran_rules.selection__hr_employee_dependants__relation__other
 msgid "Other"
-msgstr "دیگر"
+msgstr "سایر"
 
 #. module: hr_employee_iran_rules
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee__place_of_issue_birth_certificate_id
