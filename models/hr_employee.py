@@ -57,7 +57,7 @@ class HRSSWorkplace(models.Model):
     @api.model
     def name_search(self, name='', args=None, operator='ilike', limit=100):
         args = args or []
-        domain_name = ['|', ('name', 'ilike', name), ('partner_id.name', 'ilike', name)]
+        domain_name = ['|', ('name', operator, name), ('partner_id.name', operator, name)]
         recs = self.search(domain_name + args, limit=limit)
         return recs.name_get()
 
@@ -73,8 +73,8 @@ class HREmployeeDependants(models.Model):
         selection=[('spouse', 'Spouse'), ('child', 'Child'), ('father', 'Father'), ('mother', 'Mother'),
                    ('other', 'Other')],
         required=True, default='spouse')
-    student = fields.Boolean()
-    employee = fields.Many2one('hr.employee')
+    is_student = fields.Boolean()
+    employee_id = fields.Many2one('hr.employee')
 
 
 class HREmployee(models.Model):
@@ -88,24 +88,23 @@ class HREmployee(models.Model):
     place_of_issue_birth_certificate_id = fields.Many2one(comodel_name='res.city')
     insurance_code = fields.Char()
     workplace_id = fields.Many2one(comodel_name='hr.ss.workplace')
-    dependant_person_ids = fields.One2many(comodel_name='hr.employee.dependants', inverse_name='employee')
-    children = fields.Integer(compute="_compute_child_count")
+    dependant_person_ids = fields.One2many(comodel_name='hr.employee.dependants', inverse_name='employee_id')
+    number_of_children = fields.Integer(compute="_compute_child_count")
     departure_reason = fields.Selection(selection_add=[
         ('contraction_finished', 'Contraction finished'),
     ], string="Departure Reason", copy=False, tracking=True)
-    start_work_date = fields.Date()
+    work_starting_date = fields.Date()
 
     @api.depends('dependant_person_ids')
     def _compute_child_count(self):
         for employee in self:
-            employee.children = len(employee.dependant_person_ids.filtered(lambda x: x.relation == 'child'))
+            employee.number_of_children = len(employee.dependant_person_ids.filtered(lambda x: x.relation == 'child'))
 
     @api.model
     def create(self, vals):
         res = super(HREmployee, self).create(vals)
-        for employee in res:
-            for person in employee.dependant_person_ids:
-                self.env['res.partner'].check_personal_nid(person.national_number)
+        for person in res.dependant_person_ids:
+            self.env['res.partner'].check_personal_nid(person.national_number)
         return res
 
     def write(self, vals):

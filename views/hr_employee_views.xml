@@ -26,13 +26,13 @@
                         <field name="last_name"/>
                         <field name="national_number"/>
                         <field name="relation"/>
-                        <field name="student" attrs="{'invisible':[('relation','!=', 'child')]}" />
+                        <field name="is_student" attrs="{'invisible':[('relation','!=', 'child')]}" />
                     </tree>
                 </field>
             </xpath>
             <xpath expr="//group[@name='departure']" position="before">
                 <group>
-                    <field name="start_work_date"/>
+                    <field name="work_starting_date"/>
                 </group>
             </xpath>
         </field>

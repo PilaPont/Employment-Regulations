@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-02 11:33+0000\n"
-"PO-Revision-Date: 2021-02-02 11:33+0000\n"
+"POT-Creation-Date: 2021-02-02 14:11+0000\n"
+"PO-Revision-Date: 2021-02-02 14:11+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -70,11 +70,11 @@ msgstr "افراد تحت تکفل"
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee_dependants__display_name
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_ss_workplace__display_name
 msgid "Display Name"
-msgstr "نام نمایشی"
+msgstr "نام"
 
 #. module: hr_employee_iran_rules
 #: model:ir.model,name:hr_employee_iran_rules.model_hr_employee
-#: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee_dependants__employee
+#: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee_dependants__employee_id
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_ss_workplace__employee_ids
 msgid "Employee"
 msgstr "کارمند"
@@ -121,6 +121,11 @@ msgid "Insurance Workspace"
 msgstr "کارگاه"
 
 #. module: hr_employee_iran_rules
+#: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee_dependants__is_student
+msgid "Is Student"
+msgstr "در حال تحصیل"
+
+#. module: hr_employee_iran_rules
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_departure_wizard____last_update
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee____last_update
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee_dependants____last_update
@@ -162,8 +167,8 @@ msgid "Nick Name"
 msgstr "نام مستعار"
 
 #. module: hr_employee_iran_rules
-#: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee__children
-msgid "Number of Children"
+#: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee__number_of_children
+msgid "Number Of Children"
 msgstr "تعداد فرزند"
 
 #. module: hr_employee_iran_rules
@@ -187,16 +192,6 @@ msgid "Spouse"
 msgstr "همسر"
 
 #. module: hr_employee_iran_rules
-#: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee__start_work_date
-msgid "Start Work Date"
-msgstr "تاریخ شروع به کار"
-
-#. module: hr_employee_iran_rules
-#: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee_dependants__student
-msgid "Student"
-msgstr "درحال تحصیل"
-
-#. module: hr_employee_iran_rules
 #: model:ir.model,name:hr_employee_iran_rules.model_hr_employee_dependants
 msgid "This model stores the employees dependants."
 msgstr "این مدل افراد تحت تکفل کارمندان را ذخیره می‌کند."
@@ -205,6 +200,11 @@ msgstr "این مدل افراد تحت تکفل کارمندان را ذخیر�
 #: model:ir.model,name:hr_employee_iran_rules.model_hr_ss_workplace
 msgid "This model stores the workplaces of insurance."
 msgstr "این مدل کارگاه‌های بیمه را ذخیره می‌کند."
+
+#. module: hr_employee_iran_rules
+#: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee__work_starting_date
+msgid "Work Starting Date"
+msgstr "تاریخ شروع به کار"
 
 #. module: hr_employee_iran_rules
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee__workplace_id
