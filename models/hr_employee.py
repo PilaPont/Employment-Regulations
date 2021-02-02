@@ -1,15 +1,18 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import AccessDenied
 
-class HrDepartureWizard(models.TransientModel):
+
+class HRDepartureWizard(models.TransientModel):
     _inherit = 'hr.departure.wizard'
 
     departure_reason = fields.Selection(selection_add=[
         ('contraction_finished', 'Contraction finished'),
     ], string="Departure Reason", copy=False, tracking=True)
 
-class HrSSWorkplace(models.Model):
+
+class HRSSWorkplace(models.Model):
     _name = 'hr.ss.workplace'
+    _description = 'This model stores the workplaces of insurance.'
 
     name = fields.Integer(string='Code', required=True)
     display_name = fields.Char(compute="_compute_display_name")
@@ -32,7 +35,7 @@ class HrSSWorkplace(models.Model):
             if workplace.employee_ids:
                 raise AccessDenied(_('You cannot remove this workplace because some employees are members of it.'))
             else:
-                return super(HrSSWorkplace, self).unlink()
+                return super(HRSSWorkplace, self).unlink()
 
     def action_show_workplace_employees(self):
         return {
@@ -41,8 +44,8 @@ class HrSSWorkplace(models.Model):
             "view_mode": "tree,form",
             "domain": [("workplace_id", "=", self.ids)],
             "name": "Employees in Workplace",
-            "view_id" : False,
-            "search_view_id" : self.env.ref("hr.view_employee_filter").id
+            "view_id": False,
+            "search_view_id": self.env.ref("hr.view_employee_filter").id
         }
 
     def name_get(self):
@@ -59,8 +62,9 @@ class HrSSWorkplace(models.Model):
         return recs.name_get()
 
 
-class HrEmployeeDependants(models.Model):
+class HREmployeeDependants(models.Model):
     _name = 'hr.employee.dependants'
+    _description = 'This model stores the employees dependants.'
 
     first_name = fields.Char()
     last_name = fields.Char()
@@ -73,7 +77,7 @@ class HrEmployeeDependants(models.Model):
     employee = fields.Many2one('hr.employee')
 
 
-class HrEmployee(models.Model):
+class HREmployee(models.Model):
     _inherit = 'hr.employee'
 
     first_name = fields.Char()
@@ -98,14 +102,14 @@ class HrEmployee(models.Model):
 
     @api.model
     def create(self, vals):
-        res = super(HrEmployee, self).create(vals)
+        res = super(HREmployee, self).create(vals)
         for employee in res:
             for person in employee.dependant_person_ids:
                 self.env['res.partner'].check_personal_nid(person.national_number)
         return res
 
     def write(self, vals):
-        res = super(HrEmployee, self).write(vals)
+        res = super(HREmployee, self).write(vals)
         for employee in self:
             for person in employee.dependant_person_ids:
                 self.env['res.partner'].check_personal_nid(person.national_number)

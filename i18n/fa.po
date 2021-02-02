@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-24 12:57+0000\n"
-"PO-Revision-Date: 2021-01-24 12:57+0000\n"
+"POT-Creation-Date: 2021-02-02 11:33+0000\n"
+"PO-Revision-Date: 2021-02-02 11:33+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -40,13 +40,13 @@ msgstr "اتمام قرارداد"
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee_dependants__create_uid
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_ss_workplace__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "ایجاد شده توسط"
 
 #. module: hr_employee_iran_rules
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee_dependants__create_date
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_ss_workplace__create_date
 msgid "Created on"
-msgstr ""
+msgstr "ایجاد شده در"
 
 #. module: hr_employee_iran_rules
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_departure_wizard__departure_reason
@@ -138,13 +138,13 @@ msgstr "نام خانوادگی"
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee_dependants__write_uid
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_ss_workplace__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "آخرین تغییر توسط"
 
 #. module: hr_employee_iran_rules
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee_dependants__write_date
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_ss_workplace__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "آخرین به‌روزرسانی در"
 
 #. module: hr_employee_iran_rules
 #: model:ir.model.fields.selection,name:hr_employee_iran_rules.selection__hr_employee_dependants__relation__mother
@@ -197,6 +197,16 @@ msgid "Student"
 msgstr "درحال تحصیل"
 
 #. module: hr_employee_iran_rules
+#: model:ir.model,name:hr_employee_iran_rules.model_hr_employee_dependants
+msgid "This model stores the employees dependants."
+msgstr "این مدل افراد تحت تکفل کارمندان را ذخیره می‌کند."
+
+#. module: hr_employee_iran_rules
+#: model:ir.model,name:hr_employee_iran_rules.model_hr_ss_workplace
+msgid "This model stores the workplaces of insurance."
+msgstr "این مدل کارگاه‌های بیمه را ذخیره می‌کند."
+
+#. module: hr_employee_iran_rules
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee__workplace_id
 #: model_terms:ir.ui.view,arch_db:hr_employee_iran_rules.hr_ss_workplace_tree
 msgid "Workplace"
@@ -213,13 +223,3 @@ msgstr "اطلاعات کارگاه"
 msgid ""
 "You cannot remove this workplace because some employees are members of it."
 msgstr "شما نمی‌توانید این کارگاه را حذف کنید زیرا دارای کارمند مرتبط است."
-
-#. module: hr_employee_iran_rules
-#: model:ir.model,name:hr_employee_iran_rules.model_hr_employee_dependants
-msgid "hr.employee.dependants"
-msgstr ""
-
-#. module: hr_employee_iran_rules
-#: model:ir.model,name:hr_employee_iran_rules.model_hr_ss_workplace
-msgid "hr.ss.workplace"
-msgstr ""
