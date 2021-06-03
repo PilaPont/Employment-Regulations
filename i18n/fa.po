@@ -6,14 +6,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-02 14:11+0000\n"
-"PO-Revision-Date: 2021-02-02 14:11+0000\n"
+"POT-Creation-Date: 2021-04-24 14:07+0000\n"
+"PO-Revision-Date: 2021-04-24 14:07+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: hr_employee_iran_rules
+#: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee__birth_certificate
+msgid "Birth Certificate"
+msgstr "شناسنامه"
 
 #. module: hr_employee_iran_rules
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee__birth_certificate_number
@@ -71,6 +76,16 @@ msgstr "افراد تحت تکفل"
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_ss_workplace__display_name
 msgid "Display Name"
 msgstr "نام"
+
+#. module: hr_employee_iran_rules
+#: model_terms:ir.ui.view,arch_db:hr_employee_iran_rules.view_employee_form_inherit_hr_employee
+msgid "Documents"
+msgstr "مدارک"
+
+#. module: hr_employee_iran_rules
+#: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee__educational_documents
+msgid "Educational Documents"
+msgstr "مدارک تحصیلی"
 
 #. module: hr_employee_iran_rules
 #: model:ir.model,name:hr_employee_iran_rules.model_hr_employee
@@ -157,6 +172,11 @@ msgid "Mother"
 msgstr "مادر"
 
 #. module: hr_employee_iran_rules
+#: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee__national_card
+msgid "National Card"
+msgstr "کارت ملی"
+
+#. module: hr_employee_iran_rules
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee_dependants__national_number
 msgid "National Number"
 msgstr "کد ملی"
@@ -175,6 +195,11 @@ msgstr "تعداد فرزند"
 #: model:ir.model.fields.selection,name:hr_employee_iran_rules.selection__hr_employee_dependants__relation__other
 msgid "Other"
 msgstr "سایر"
+
+#. module: hr_employee_iran_rules
+#: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee__passport
+msgid "Passport"
+msgstr "پاسپورت"
 
 #. module: hr_employee_iran_rules
 #: model:ir.model.fields,field_description:hr_employee_iran_rules.field_hr_employee__place_of_issue_birth_certificate_id
