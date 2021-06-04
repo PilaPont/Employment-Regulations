@@ -11,6 +11,7 @@
     'category': 'Human Resources',
     'depends': ['hr',
                 'l10n_ir_partner',
+                'base_core'
                 ],
     'data': ['data/employee_number_data.xml',
              'views/hr_employee_views.xml',
@@ -20,5 +21,4 @@
     'application': False,
     'installable': True,
     'pre_init_hook': 'pre_init_hook',
-    'post_init_hook': 'post_init_hook',
 }
