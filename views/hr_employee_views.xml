@@ -5,10 +5,6 @@
         <field name="model">hr.employee</field>
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
-            <!--            <xpath expr="//field[@name='name']" position="attributes">-->
-            <!--                <attribute name="class">oe_read_only</attribute>-->
-            <!--                <attribute name="required">0</attribute>-->
-            <!--            </xpath>-->
             <xpath expr="//field[@name='name']" position="replace">
                 <group>
                         <field class="oe_edit_only" name="first_name" required="1"/>
@@ -19,7 +15,7 @@
             <xpath expr="//div[hasclass('oe_title')]" position="inside">
                 <h2>
                     <group>
-                        <field name="employee_number" readonly="1"/>
+                        <field name="employee_number" readonly="0"/>
                     </group>
                 </h2>
             </xpath>
