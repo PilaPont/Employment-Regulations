@@ -25,12 +25,8 @@ class ResourceResource(models.Model):
         return res
 
     def _get_starting_sequence(self):
-        """Get a default sequence number.
-
-        This function should be overriden by models heriting from this mixin
-        This number will be incremented so you probably want to start the sequence at 0.
-
-        :return: string to use as the default sequence to increment
+        """overwrite to produce 0000 sequence instead of 00000000 one
         """
         self.ensure_one()
         return "0000"
+
