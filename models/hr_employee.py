@@ -80,7 +80,7 @@ class HREmployeeDependants(models.Model):
 class HrEmployeePrivate(models.Model):
     _inherit = 'hr.employee'
 
-    employee_number = fields.Char(string="Employee Number", default='/', copy=False)
+    employee_number = fields.Char(related='resource_id.employee_number', readonly=False, store=True)
     first_name = fields.Char(groups="hr.group_hr_user")
     last_name = fields.Char(groups="hr.group_hr_user")
     nick_name = fields.Char(groups="hr.group_hr_user")
@@ -115,10 +115,6 @@ class HrEmployeePrivate(models.Model):
         res = super(HrEmployeePrivate, self).create(vals)
         for person in res.dependant_ids:
             self.env['res.partner'].check_personal_nid(person.national_id_num)
-
-        if 'employee_number' not in vals:
-            vals['employee_number'] = self.env['ir.sequence'].next_by_code('employee.number.sequence')
-
         return res
 
     def write(self, vals):
