@@ -3,7 +3,7 @@ from odoo import api, fields, models
 
 class ResourceResource(models.Model):
     _name = 'resource.resource'
-    _inherit = ['resource.resource', 'sequence.mixin']
+    _inherit = ['resource.resource', 'editable.sequence.mixin']
 
     _sequence_field = 'employee_number'
     _sequence_date_field = "create_date"
@@ -18,9 +18,8 @@ class ResourceResource(models.Model):
     @api.model
     def create(self, vals):
         res = super(ResourceResource, self).create(vals)
-        import logging
-        if 'employee_number' not in vals:
-            logging.critical(res._set_next_sequence())
+        if not vals.get('employee_number'):
+            res._set_next_sequence()
 
         return res
 

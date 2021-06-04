@@ -80,7 +80,7 @@ class HREmployeeDependants(models.Model):
 class HrEmployeePrivate(models.Model):
     _inherit = 'hr.employee'
 
-    employee_number = fields.Char(related='resource_id.employee_number', readonly=False, store=True)
+    employee_number = fields.Char(related='resource_id.employee_number', store=True)
     first_name = fields.Char(groups="hr.group_hr_user")
     last_name = fields.Char(groups="hr.group_hr_user")
     nick_name = fields.Char(groups="hr.group_hr_user")
