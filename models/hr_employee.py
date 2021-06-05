@@ -112,7 +112,7 @@ class HrEmployeePrivate(models.Model):
 
     @api.model
     def create(self, vals):
-        if 'first_name' or 'last_name' in vals:
+        if 'first_name' and 'last_name' in vals:
             vals['name'] = vals.get('first_name') + ' ' + vals.get('last_name')
         elif 'name' in vals:
             name_split = vals['name'].split()
