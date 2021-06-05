@@ -13,10 +13,11 @@
                 'l10n_ir_partner',
                 'base_core'
                 ],
-    'data': ['data/employee_number_data.xml',
-             'views/hr_employee_views.xml',
+    'data': ['views/hr_employee_views.xml',
              'views/hr_ss_workplace_views.xml',
              'security/ir.model.access.csv', ],
+    'demo': ['data/employee_number_demo.xml',
+             ],
     'auto_install': True,
     'application': False,
     'installable': True,
