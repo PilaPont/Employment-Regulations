@@ -16,10 +16,10 @@
     'data': ['views/hr_employee_views.xml',
              'views/hr_ss_workplace_views.xml',
              'security/ir.model.access.csv', ],
-    'demo': ['data/employee_number_demo.xml',
-             ],
+
     'auto_install': True,
     'application': False,
     'installable': True,
     'pre_init_hook': 'pre_init_hook',
+    'post_init_hook': 'post_init_hook',
 }
