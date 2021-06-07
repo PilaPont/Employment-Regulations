@@ -110,17 +110,27 @@ class HrEmployeePrivate(models.Model):
         for employee in self:
             employee.number_of_children = len(employee.dependant_ids.filtered(lambda x: x.relation == 'child'))
 
+    @staticmethod
+    def split_name(name):
+        name_split = name.split()
+        if len(name_split) > 1:
+            if name_split[0] == 'سید' or name_split[0] == 'سیده':
+                first_name = name_split[0] + ' ' + name_split[1]
+                last_name = ' '.join(name_split[2:]) if len(name_split) > 2 else ''
+            else:
+                first_name = name_split[0]
+                last_name = ' '.join(name_split[1:])
+        else:
+            first_name = ''
+            last_name = name
+        return first_name, last_name
+
     @api.model
     def create(self, vals):
-        if 'first_name' and 'last_name' in vals:
-            vals['name'] = vals.get('first_name') + ' ' + vals.get('last_name')
-        elif 'name' in vals:
-            name_split = vals['name'].split()
-            if len(name_split) > 1:
-                vals['first_name'] = name_split[0]
-                vals['last_name'] = ' '.join(name_split[1:])
-            else:
-                vals['last_name'] = vals.get('name')
+        if vals.get('first_name') or vals.get('last_name'):
+            vals['name'] = vals.get('first_name', '') + ' ' + vals.get('last_name', '')
+        elif vals.get('name'):
+            vals['first_name'], vals['last_name'] = self.split_name(vals.get('name'))
 
         res = super(HrEmployeePrivate, self).create(vals)
         for dependant in res.dependant_ids:
@@ -131,14 +141,9 @@ class HrEmployeePrivate(models.Model):
         for employee in self:
             if 'first_name' or 'last_name' in vals:
                 vals['name'] = vals.get('first_name', employee.first_name or '') + ' ' + vals.get('last_name',
-                                                                                            employee.last_name or '')
+                                                                                                  employee.last_name or '')
             elif 'name' in vals:
-                name_split = vals['name'].split()
-                if len(name_split) > 1:
-                    vals['first_name'] = name_split[0]
-                    vals['last_name'] = ' '.join(name_split[1:])
-                else:
-                    vals['last_name'] = vals.get('name')
+                vals['first_name'], vals['last_name'] = self.split_name(vals.get('name'))
 
         res = super(HrEmployeePrivate, self).write(vals)
         for employee in self:
@@ -149,15 +154,10 @@ class HrEmployeePrivate(models.Model):
     @api.model
     def default_get(self, field_list):
         vals = super().default_get(field_list)
-        if 'first_name' or 'last_name' in vals:
+        if vals.get('first_name') or vals.get('last_name'):
             vals['name'] = vals.get('first_name', '') + ' ' + vals.get('last_name', '')
-        elif 'name' in vals:
-            name_split = vals['name'].split()
-            if len(name_split) > 1:
-                vals['first_name'] = name_split[0]
-                vals['last_name'] = ' '.join(name_split[1:])
-            else:
-                vals['last_name'] = vals.get('name')
+        elif vals.get('name'):
+            vals['first_name'], vals['last_name'] = self.split_name(vals.get('name'))
         return vals
 
 
