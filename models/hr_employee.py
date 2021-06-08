@@ -127,10 +127,16 @@ class HrEmployeePrivate(models.Model):
 
     @api.model
     def create(self, vals):
-        if vals.get('first_name') or vals.get('last_name'):
+        if vals.get('first_name') and vals.get('last_name') or (vals.get('first_name') or vals.get('last_name') and not vals.get('name')):
             vals['name'] = vals.get('first_name', '') + ' ' + vals.get('last_name', '')
         elif vals.get('name'):
-            vals['first_name'], vals['last_name'] = self.split_name(vals.get('name'))
+            first_name, last_name = self.split_name(vals.get('name'))
+            if vals.get('first_name') and not vals.get('last_name') and vals['first_name'] == first_name:
+                vals['last_name']=last_name
+            elif vals.get('last_name') and not vals.get('first_name') and vals['last_name'] == last_name:
+                vals['first_name'] = first_name
+            else:
+                vals['first_name'], vals['last_name'] = first_name, last_name
 
         res = super(HrEmployeePrivate, self).create(vals)
         for dependant in res.dependant_ids:
