@@ -68,7 +68,7 @@ class HREmployeeDependants(models.Model):
 
     first_name = fields.Char()
     last_name = fields.Char()
-    national_number = fields.Char()
+    national_id_num = fields.Char()
     relation = fields.Selection(
         selection=[('spouse', 'Spouse'), ('child', 'Child'), ('father', 'Father'), ('mother', 'Mother'),
                    ('other', 'Other')],
@@ -77,39 +77,97 @@ class HREmployeeDependants(models.Model):
     employee_id = fields.Many2one('hr.employee')
 
 
-class HREmployee(models.Model):
+class HrEmployeePrivate(models.Model):
     _inherit = 'hr.employee'
 
-    first_name = fields.Char()
-    last_name = fields.Char()
-    nick_name = fields.Char()
-    father_name = fields.Char()
-    birth_certificate_number = fields.Char()
-    place_of_issue_birth_certificate_id = fields.Many2one(comodel_name='res.city')
-    insurance_code = fields.Char()
-    workplace_id = fields.Many2one(comodel_name='hr.ss.workplace')
-    dependant_person_ids = fields.One2many(comodel_name='hr.employee.dependants', inverse_name='employee_id')
-    number_of_children = fields.Integer(compute="_compute_child_count")
+    employee_number = fields.Char(related='resource_id.employee_number', store=True)
+    first_name = fields.Char(groups="hr.group_hr_user")
+    last_name = fields.Char(groups="hr.group_hr_user")
+    nick_name = fields.Char(groups="hr.group_hr_user")
+    father_name = fields.Char(groups="hr.group_hr_user")
+    national_id_card_image = fields.Binary(groups="hr.group_hr_user")
+    identity_certificate_image = fields.Binary(groups="hr.group_hr_user")
+    passport_image = fields.Binary(groups="hr.group_hr_user")
+    educational_documents = fields.Binary(groups="hr.group_hr_user")
+    identity_certificate_number = fields.Char(groups="hr.group_hr_user")
+    identity_certificate_place_of_issue_id = fields.Many2one(comodel_name='res.city', groups="hr.group_hr_user")
+    ssn = fields.Char(groups="hr.group_hr_user")
+    workplace_id = fields.Many2one(comodel_name='hr.ss.workplace', groups="hr.group_hr_user")
+    dependant_ids = fields.One2many(comodel_name='hr.employee.dependants', inverse_name='employee_id',
+                                    groups="hr.group_hr_user")
+    number_of_children = fields.Integer(compute="_compute_child_count", groups="hr.group_hr_user")
     departure_reason = fields.Selection(selection_add=[
         ('contraction_finished', 'Contraction finished'),
-    ], string="Departure Reason", copy=False, tracking=True)
-    work_starting_date = fields.Date()
+    ], tracking=True, groups="hr.group_hr_user")
+    employment_date = fields.Date(groups="hr.group_hr_user")
 
-    @api.depends('dependant_person_ids')
+    _sql_constraints = [
+        ('uniq_employee_number', 'UNIQUE(employee_number)', 'This employee number is already taken.'),
+    ]
+
+    @api.depends('dependant_ids')
     def _compute_child_count(self):
         for employee in self:
-            employee.number_of_children = len(employee.dependant_person_ids.filtered(lambda x: x.relation == 'child'))
+            employee.number_of_children = len(employee.dependant_ids.filtered(lambda x: x.relation == 'child'))
+
+    @staticmethod
+    def split_name(name):
+        name_split = name.split()
+        if len(name_split) > 1:
+            if name_split[0] == 'سید' or name_split[0] == 'سیده':
+                first_name = name_split[0] + ' ' + name_split[1]
+                last_name = ' '.join(name_split[2:]) if len(name_split) > 2 else ''
+            else:
+                first_name = name_split[0]
+                last_name = ' '.join(name_split[1:])
+        else:
+            first_name = ''
+            last_name = name
+        return first_name, last_name
 
     @api.model
     def create(self, vals):
-        res = super(HREmployee, self).create(vals)
-        for person in res.dependant_person_ids:
-            self.env['res.partner'].check_personal_nid(person.national_number)
+        if vals.get('first_name') and vals.get('last_name') or (vals.get('first_name') or vals.get('last_name') and not vals.get('name')):
+            vals['name'] = vals.get('first_name', '') + ' ' + vals.get('last_name', '')
+        elif vals.get('name'):
+            first_name, last_name = self.split_name(vals.get('name'))
+            if vals.get('first_name') and not vals.get('last_name') and vals['first_name'] == first_name:
+                vals['last_name']=last_name
+            elif vals.get('last_name') and not vals.get('first_name') and vals['last_name'] == last_name:
+                vals['first_name'] = first_name
+            else:
+                vals['first_name'], vals['last_name'] = first_name, last_name
+
+        res = super(HrEmployeePrivate, self).create(vals)
+        for dependant in res.dependant_ids:
+            self.env['res.partner'].check_personal_nid(dependant.national_id_num)
         return res
 
     def write(self, vals):
-        res = super(HREmployee, self).write(vals)
         for employee in self:
-            for person in employee.dependant_person_ids:
-                self.env['res.partner'].check_personal_nid(person.national_number)
+            if 'first_name' or 'last_name' in vals:
+                vals['name'] = vals.get('first_name', employee.first_name or '') + ' ' + vals.get('last_name',
+                                                                                                  employee.last_name or '')
+            elif 'name' in vals:
+                vals['first_name'], vals['last_name'] = self.split_name(vals.get('name'))
+
+        res = super(HrEmployeePrivate, self).write(vals)
+        for employee in self:
+            for person in employee.dependant_ids:
+                self.env['res.partner'].check_personal_nid(person.national_id_num)
         return res
+
+    @api.model
+    def default_get(self, field_list):
+        vals = super().default_get(field_list)
+        if vals.get('first_name') or vals.get('last_name'):
+            vals['name'] = vals.get('first_name', '') + ' ' + vals.get('last_name', '')
+        elif vals.get('name'):
+            vals['first_name'], vals['last_name'] = self.split_name(vals.get('name'))
+        return vals
+
+
+class HrEmployeePublic(models.Model):
+    _inherit = "hr.employee.public"
+
+    employee_number = fields.Char(readonly=True)

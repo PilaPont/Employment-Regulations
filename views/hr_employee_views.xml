@@ -5,35 +5,85 @@
         <field name="model">hr.employee</field>
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="replace">
+                <group>
+                        <field class="oe_edit_only" name="first_name" required="1"/>
+                        <field class="oe_edit_only" name="last_name" required="1"/>
+                        <field class="oe_read_only" name="name" required="False"/>
+                </group>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_title')]" position="inside">
+                <h2>
+                    <group>
+                        <field name="employee_number" readonly="0"/>
+                    </group>
+                </h2>
+            </xpath>
             <xpath expr="//field[@name='work_location']" position="after">
                 <field name="workplace_id"/>
             </xpath>
             <xpath expr="//field[@name='address_home_id']" position="before">
-                <field name="first_name"/>
-                <field name="last_name"/>
                 <field name="nick_name"/>
                 <field name="father_name"/>
             </xpath>
             <xpath expr="//field[@name='country_of_birth']" position="after">
-                <field name="birth_certificate_number"/>
-                <field name="place_of_issue_birth_certificate_id"/>
-                <field name="insurance_code"/>
+                <field name="identity_certificate_number"/>
+                <field name="identity_certificate_place_of_issue_id"/>
+                <field name="ssn"/>
             </xpath>
             <xpath expr="//field[@name='children']" position="before">
-                <field name="dependant_person_ids" nolabel="1" colspan="2">
+                <field name="dependant_ids" nolabel="1" colspan="2">
                     <tree editable="bottom">
                         <field name="first_name"/>
                         <field name="last_name"/>
-                        <field name="national_number"/>
+                        <field name="national_id_num"/>
                         <field name="relation"/>
-                        <field name="is_student" attrs="{'invisible':[('relation','!=', 'child')]}" />
+                        <field name="is_student" attrs="{'invisible':[('relation','!=', 'child')]}"/>
                     </tree>
                 </field>
             </xpath>
             <xpath expr="//group[@name='departure']" position="before">
                 <group>
-                    <field name="work_starting_date"/>
+                    <field name="employment_date"/>
                 </group>
+            </xpath>
+            <xpath expr="//page[@name='personal_information']" position="after">
+                <page name="Documents" string="Documents">
+                    <group string="Documents">
+                        <group>
+                            <field name="national_id_card_image"/>
+                            <field name="identity_certificate_image"/>
+                        </group>
+                        <group>
+                            <field name="passport_image"/>
+                            <field name="educational_documents"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <record id="hr_kanban_view_employees" model="ir.ui.view">
+        <field name="name">hr.kanban.view.employees</field>
+        <field name="model">hr.employee</field>
+        <field name="priority" eval="25"/>
+        <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <br/>
+                <field name="employee_number" placeholder="Employee Number" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_employee_tree" model="ir.ui.view">
+        <field name="name">view.employee.tree</field>
+        <field name="model">hr.employee</field>
+        <field name="priority" eval="25"/>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='name']" position="after">
+                <field name="employee_number"/>
             </xpath>
         </field>
     </record>
